@@ -13,7 +13,7 @@ def derive_key(password: str, salt: bytes) -> bytes:
         salt=salt,
         dkLen=32,  # 32 bytes for AES-256
         count=100000,  # Number of iterations
-        hmac_hash_module=SHA256
+        hmac_hash_module=SHA256,
     )
 
 
@@ -22,16 +22,16 @@ def encrypt_file(file_path: str, password: str) -> None:
     try:
         # Generate a random salt for key derivation
         salt = os.urandom(16)
-        
+
         # Derive the encryption key from the password
         key = derive_key(password, salt)
-        
+
         # Generate a random IV for encryption
         iv = os.urandom(16)
-        
+
         # Read the file data
         try:
-            with open(file_path, 'rb') as f:
+            with open(file_path, "rb") as f:
                 data = f.read()
         except FileNotFoundError:
             print(f"Error: File '{file_path}' not found")
@@ -42,18 +42,18 @@ def encrypt_file(file_path: str, password: str) -> None:
         except IOError as e:
             print(f"Error reading file: {e}")
             return
-        
+
         # Pad the data
         padded_data = pad(data, AES.block_size)
-        
+
         # Create cipher and encrypt the data
         cipher = AES.new(key, AES.MODE_CBC, iv)
         encrypted_data = cipher.encrypt(padded_data)
-        
+
         # Write the encrypted file
-        encrypted_file_path = file_path + '.flk'
+        encrypted_file_path = file_path + ".flk"
         try:
-            with open(encrypted_file_path, 'wb') as f:
+            with open(encrypted_file_path, "wb") as f:
                 f.write(salt + iv + encrypted_data)
         except PermissionError:
             print(f"Error: Permission denied writing to '{encrypted_file_path}'")
@@ -61,7 +61,7 @@ def encrypt_file(file_path: str, password: str) -> None:
         except IOError as e:
             print(f"Error writing encrypted file: {e}")
             return
-        
+
         print(f"File encrypted successfully: {encrypted_file_path}")
     except Exception as e:
         print(f"Error during encryption: {e}")
