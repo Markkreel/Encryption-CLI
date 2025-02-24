@@ -1,0 +1,6 @@
+CLI Skeleton:  
+Use Python’s argparse to define two subcommands:  
+encrypt <file> --password <pwd> (e.g., encrypt test.txt --password "mypwd")  
+decrypt <file> --password <pwd> (e.g., decrypt test.txt.flk --password "mypwd")
+Make --password (or -p) a required flag with required=True.  
+Add help text: parser.description = "FileLock: Securely encrypt/decrypt files with AES-256".
