@@ -68,4 +68,4 @@ python filelock.py --help
 
 This is a personal project for my portfolio, but feel free to fork it and experiment! Suggestions are welcome—open an issue if you spot something to improve.
 
-**Last Updated:** 24-02-2025 ⸺ **Last Checked:** 25-02-2025
+**Last Updated:** 24-02-2025 ⸺ **Last Reviewed:** 26-02-2025
