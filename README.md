@@ -1,6 +1,6 @@
 # FileLock
 
-**FileLock** is a command-line tool designed to securely encrypt files using AES-256 encryption with a password-derived key. Built with Python, it’s a simple yet powerful utility for protecting sensitive data. This project is under active development.
+FileLock is a command-line tool for securely encrypting and decrypting files using AES-256 encryption and SHA-256 integrity verification. Built with Python, it’s a lightweight, open-source utility designed to protect sensitive data with a password.
 
 ![1740416788661](image/README/1740416788661.png)
 
@@ -8,10 +8,13 @@
 
 In a world where data security is critical, FileLock provides a lightweight, open-source solution to encrypt files with a password of your choice. Whether it’s a personal document or a configuration file, FileLock ensures your data stays confidential using industry-standard cryptography.
 
-## Current Features
+## Features
 
-- **Encryption:** Encrypt any file with AES-256 in CBC mode, using a secure key derived from your password via PBKDF2.
-- **CLI Interface:** Easy-to-use command-line interface with clear arguments for file and password input.
+- Encryption: Encrypt files with AES-256 in CBC mode, using a password-derived key via PBKDF2.
+- Decryption: Restore encrypted files to their original state with the correct password.
+- Integrity Verification: Uses SHA-256 hashing to detect tampering or corruption.
+- CLI Interface: Easy-to-use command-line interface with clear arguments and error handling.
+- Cross-Platform: Works on Windows, Linux, and macOS with minimal setup.
 
 ## Installation
 
@@ -47,10 +50,21 @@ Encrypt a file with a password:
 python filelock.py encrypt <file> --password "<your_password>"
 ```
 
-**Notes**:
+The encrypted file **(**`<file>.flk`) contains the salt, initialization vector (IV), and encrypted data.
 
-- The encrypted file **(**`<file>.flk`) contains the salt, initialization vector (IV), and encrypted data.
-- Decryption is coming soon.
+### Decrypt a File
+
+Decrypt an encrypted file with the original password:
+
+```bash
+python filelock.py decrypt <file> --password "<your_password>"
+```
+
+### Error Handling
+
+- File not found
+- Wrong password
+- Tampered file
 
 ## Help
 
@@ -60,12 +74,18 @@ python filelock.py --help
 
 ## Design Decisions
 
-- **AES-256 CBC**: Chosen for its strength and widespread use in secure applications. CBC mode adds randomness via the IV, making each encryption unique even with the same password.
-- **PBKDF2 for Key Derivation**: Uses 100,000 iterations to turn your password into a secure 32-byte key, paired with a random 16-byte salt to prevent rainbow table attacks.
-- **File Format**: The encrypted output (`<file>.flk`) bundles salt, IV, and encrypted data into one file for simplicity and portability.
+- AES-256 CBC: Industry-standard encryption with CBC mode for block-level security, paired with a random IV to ensure uniqueness.
+- PBKDF2 Key Derivation: Turns your password into a secure 32-byte key with 100,000 iterations and a 16-byte salt, resisting brute-force attacks.
+- SHA-256 Integrity: Hashes the original file during encryption and verifies it on decryption, catching tampering or corruption.
+- File Format: Encrypted output (`<file>.flk`) bundles salt (16 bytes), IV (16 bytes), hash (32 bytes), and encrypted data into one portable file.
+- PEP 8 Compliance: Code follows Python’s style guide for readability and professionalism.
 
 ## Contrubuting
 
 This is a personal project for my portfolio, but feel free to fork it and experiment! Suggestions are welcome—open an issue if you spot something to improve.
 
-**Last Updated:** 24-02-2025 ⸺ **Last Reviewed:** 26-02-2025
+## Acknowledgements
+
+Built as a showcase for skills in cybersecurity, system design, and Python development.
+
+**Last Updated:** 27-02-2025 ⸺ **Last Reviewed:** 27-02-2025
