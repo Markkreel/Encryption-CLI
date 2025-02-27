@@ -1,11 +1,11 @@
 import os
 import sys
+import hashlib
 from argparse import ArgumentParser
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Hash import SHA256
-import hashlib
 
 
 def derive_key(password: str, salt: bytes) -> bytes:
@@ -69,7 +69,7 @@ def encrypt_file(file_path: str, password: str) -> None:
             return
 
         print(f"File encrypted successfully: {encrypted_file_path}")
-    except Exception as e:
+    except (ValueError, IOError, PermissionError) as e:
         print(f"Error during encryption: {e}")
 
 
@@ -108,7 +108,8 @@ def decrypt_file(file_path: str, password: str) -> None:
         except ValueError as e:
             print(f"Error: Invalid padding or corrupted data - {e}", file=sys.stderr)
             return
-        except Exception as e:
+        except (TypeError, KeyError) as e:
+            # Handle specific exceptions that could occur during AES operations
             print(f"Error during decryption: {e}", file=sys.stderr)
             return
 
@@ -134,7 +135,7 @@ def decrypt_file(file_path: str, password: str) -> None:
             return
 
         print(f"File decrypted successfully: {decrypted_file_path}")
-    except Exception as e:
+    except (ValueError, IOError, PermissionError, TypeError, KeyError) as e:
         print(f"Error during decryption: {e}", file=sys.stderr)
 
 
