@@ -116,6 +116,9 @@ def decrypt_file(file_path: str, password: str) -> None:
         # Verify integrity
         hash_computed = hashlib.sha256(original_data).digest()
         if hash_stored != hash_computed:
+            decrypted_file_path = file_path.replace(".flk", "")
+            if os.path.exists(decrypted_file_path):
+                os.remove(decrypted_file_path)
             print(
                 "Error: Integrity check failed - file may have been tampered with",
                 file=sys.stderr,
