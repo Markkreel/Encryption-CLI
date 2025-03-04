@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name="FileLock",
     version="0.1",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=["filelock"],
+    package_dir={"filelock": "src"},
     install_requires=[
         "pycryptodome",  # For encryption/decryption functionality
         "pytest",  # For testing
