@@ -1,12 +1,24 @@
+"""Unit tests for the FileLock encryption and decryption system.
+
+This module contains test cases that verify the functionality of the FileLock system,
+including key derivation, file encryption/decryption, and security features.
+"""
+
 import unittest
 import os
 import tempfile
-import hashlib
 from pathlib import Path
-from filelock import derive_key, encrypt_file, decrypt_file
+from src.filelock import derive_key, encrypt_file, decrypt_file
 
 
 class TestFileLock(unittest.TestCase):
+    """Test suite for FileLock encryption and decryption functionality.
+
+    This class contains unit tests that verify the core functionality of the FileLock system,
+    including key derivation, file encryption/decryption, password validation, tampering detection,
+    and handling of edge cases like empty or non-existent files.
+    """
+
     def setUp(self):
         """Set up test environment before each test."""
         self.test_dir = tempfile.mkdtemp()
