@@ -69,15 +69,9 @@ def test_restore_file_with_wrong_extension(test_file):
 def test_restore_file_with_wrong_password(test_file):
     """Test restoring a file with incorrect password."""
     # First secure the file
-    try:
-        secure_file(test_file, "correct_password")
-        secured_file = test_file + ".flc"
-    except zlib.error as e:
-        raise ValueError(f"Failed to compress data: {e}") from e
+    secure_file(test_file, "correct_password")
+    secured_file = test_file + ".flc"
 
     # Then try to restore with wrong password
-    try:
-        with pytest.raises(ValueError):
-            restore_file(secured_file, "wrong_password")
-    except zlib.error as e:
-        raise ValueError(f"Failed to decompress data: {e}") from e
+    with pytest.raises(ValueError):
+        restore_file(secured_file, "wrong_password")
