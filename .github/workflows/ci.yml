@@ -56,7 +56,7 @@ jobs:
           pip install pytest pycryptodome
           pip install -e .
 
-      - name: Run compression tests
+      - name: Run encryption-decryption tests
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: pytest tests/test_filelock.py -v
