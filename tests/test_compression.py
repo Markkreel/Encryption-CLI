@@ -1,12 +1,29 @@
+"""Test module for compression functionality.
+
+This module contains unit tests for testing file compression and decompression
+operations, including compression levels, file integrity, progress tracking,
+error handling, and handling of various file sizes.
+"""
+
 import unittest
 import os
 import tempfile
-import hashlib
 from pathlib import Path
-from FileLock import compress_file, decompress_file
+from src import compression
 
 
 class TestCompression(unittest.TestCase):
+    """Test suite for compression and decompression functionality.
+
+    Tests various aspects of file compression including:
+    - Different compression levels
+    - File integrity verification
+    - Progress callback functionality
+    - Error handling
+    - Empty file handling
+    - Large file handling
+    """
+
     def setUp(self):
         """Set up test environment before each test."""
         self.test_dir = tempfile.mkdtemp()
@@ -31,7 +48,7 @@ class TestCompression(unittest.TestCase):
         """Test compression with different compression levels."""
         for level in range(1, 10):
             # Compress file
-            compress_file(self.test_file_path, compression_level=level)
+            compression.compress_file(self.test_file_path, compression_level=level)
             compressed_file = self.test_file_path + ".flc"
             self.assertTrue(os.path.exists(compressed_file))
 
@@ -40,7 +57,7 @@ class TestCompression(unittest.TestCase):
                 self.assertLess(os.path.getsize(compressed_file), len(self.test_data))
 
             # Decompress and verify content
-            decompress_file(compressed_file)
+            compression.decompress_file(compressed_file)
             with open(self.test_file_path, "rb") as f:
                 decompressed_data = f.read()
             self.assertEqual(self.test_data, decompressed_data)
@@ -51,7 +68,7 @@ class TestCompression(unittest.TestCase):
     def test_file_integrity(self):
         """Test file integrity verification."""
         # Compress file
-        compress_file(self.test_file_path)
+        compression.compress_file(self.test_file_path)
         compressed_file = self.test_file_path + ".flc"
 
         # Tamper with compressed file
@@ -60,7 +77,7 @@ class TestCompression(unittest.TestCase):
             f.write(b"tampered")
 
         # Attempt to decompress tampered file
-        decompress_file(compressed_file)
+        compression.decompress_file(compressed_file)
 
         # Original file should not be overwritten
         with open(self.test_file_path, "rb") as f:
@@ -75,7 +92,9 @@ class TestCompression(unittest.TestCase):
             progress_values.append((current, total))
 
         # Test compression progress
-        compress_file(self.test_file_path, progress_callback=progress_callback)
+        compression.compress_file(
+            self.test_file_path, progress_callback=progress_callback
+        )
         self.assertGreater(len(progress_values), 0)
         self.assertEqual(progress_values[-1][1], len(self.test_data))
 
@@ -84,7 +103,9 @@ class TestCompression(unittest.TestCase):
 
         # Test decompression progress
         compressed_file = self.test_file_path + ".flc"
-        decompress_file(compressed_file, progress_callback=progress_callback)
+        compression.decompress_file(
+            compressed_file, progress_callback=progress_callback
+        )
         self.assertGreater(len(progress_values), 0)
         self.assertEqual(progress_values[-1][0], progress_values[-1][1])
 
@@ -92,18 +113,18 @@ class TestCompression(unittest.TestCase):
         """Test error handling scenarios."""
         # Test invalid compression level
         with self.assertRaises(ValueError):
-            compress_file(self.test_file_path, compression_level=0)
+            compression.compress_file(self.test_file_path, compression_level=0)
         with self.assertRaises(ValueError):
-            compress_file(self.test_file_path, compression_level=10)
+            compression.compress_file(self.test_file_path, compression_level=10)
 
         # Test non-existent file
         nonexistent_file = os.path.join(self.test_dir, "nonexistent.txt")
-        compress_file(nonexistent_file)
+        compression.compress_file(nonexistent_file)
         self.assertFalse(os.path.exists(nonexistent_file + ".flc"))
 
         # Test invalid file extension for decompression
         with self.assertRaises(ValueError):
-            decompress_file(self.test_file_path)
+            compression.decompress_file(self.test_file_path)
 
     def test_empty_file(self):
         """Test compression and decompression of empty files."""
@@ -112,12 +133,12 @@ class TestCompression(unittest.TestCase):
             pass
 
         # Compress empty file
-        compress_file(empty_file)
+        compression.compress_file(empty_file)
         compressed_file = empty_file + ".flc"
         self.assertTrue(os.path.exists(compressed_file))
 
         # Decompress empty file
-        decompress_file(compressed_file)
+        compression.decompress_file(compressed_file)
         with open(empty_file, "rb") as f:
             content = f.read()
         self.assertEqual(content, b"")
@@ -131,12 +152,12 @@ class TestCompression(unittest.TestCase):
             f.write(large_data)
 
         # Compress large file
-        compress_file(large_file)
+        compression.compress_file(large_file)
         compressed_file = large_file + ".flc"
         self.assertTrue(os.path.exists(compressed_file))
 
         # Decompress and verify content
-        decompress_file(compressed_file)
+        compression.decompress_file(compressed_file)
         with open(large_file, "rb") as f:
             decompressed_data = f.read()
         self.assertEqual(large_data, decompressed_data)
