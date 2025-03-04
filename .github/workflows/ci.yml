@@ -1,4 +1,4 @@
-name: Python Tests
+name: CI
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test-compression:
-    name: Test Compression
+  module_tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,32 +16,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Cache pip packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -v -r requirements.txt
-          pip install -e .
-      - name: Run compression tests
-        run: python -m unittest tests/test_compression.py
+          pip install pytest pycryptodome
 
-  test-filelock:
-    name: Test FileLock
+      - name: Run compression tests
+        run: pytest tests/test_compression.py -v
+
+      - name: Run filelock tests
+        run: pytest tests/test_filelock.py -v
+
+  integration_test:
+    needs: module_tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v3
@@ -55,91 +52,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest coverage
-
-      - name: Run compression tests
-        run: |
-          coverage run -m pytest tests/test_compression.py
-          coverage report --include="compression.py"
-
-      - name: Upload compression test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: compression-test-results-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: .coverage
-
-      - name: Upload compression coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          flags: compression
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  integration-test:
-    # Update the job names to match the actual job names
-    needs: [test-filelock, test-compression]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest coverage pycryptodome
+          pip install pytest pycryptodome
 
       - name: Run integration tests
-        run: |
-          coverage run -m pytest tests/test_integration.py
-          coverage report --include="src/main.py"
-
-      - name: Upload integration test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: integration-test-results-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: .coverage
-
-      - name: Upload integration coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          flags: integration
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  build:
-    needs: [test, compression-test, integration-test]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Cache pip packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -v -r requirements.txt
-          pip install -e .
-      - name: Run filelock tests
-        run: python -m unittest tests/test_filelock.py
+        run: pytest tests/test_integration.py -v
