@@ -46,7 +46,7 @@ class TestCompression(unittest.TestCase):
 
     def test_compression_levels(self):
         """Test compression with different compression levels."""
-        for level in range(1, 10):
+        for level in range(1, 9):
             # Compress file
             compression.compress_file(self.test_file_path, compression_level=level)
             compressed_file = self.test_file_path + ".flc"

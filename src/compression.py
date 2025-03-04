@@ -1,4 +1,5 @@
-import os
+"""Provides compression and decompression functionality for files using zlib."""
+
 import zlib
 import hashlib
 from typing import Optional, Callable
@@ -90,7 +91,7 @@ def decompress_file(
         try:
             with open(file_path, "rb") as f:
                 # Read compression level and hash
-                compression_level = int.from_bytes(f.read(1), byteorder="big")
+                f.read(1)  # Skip compression level byte as it's not needed
                 original_hash = f.read(32)
                 compressed_data = f.read()
         except FileNotFoundError:
