@@ -103,7 +103,7 @@ def decompress_file(
         decompressed_data = decompressor.decompress(compressed_data)
         decompressed_data += decompressor.flush()
     except zlib.error as e:
-        raise zlib.error(f"Failed to decompress data: {e}")
+        raise ValueError(f"Failed to decompress data: {e}")
 
     # Verify integrity
     computed_hash = hashlib.sha256(decompressed_data).digest()
