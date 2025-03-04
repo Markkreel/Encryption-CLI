@@ -3,7 +3,7 @@ import os
 import tempfile
 import hashlib
 from pathlib import Path
-from compression import compress_file, decompress_file
+from FileLock import compress_file, decompress_file
 
 
 class TestCompression(unittest.TestCase):
