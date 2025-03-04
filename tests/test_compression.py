@@ -71,15 +71,25 @@ class TestCompression(unittest.TestCase):
         compression.compress_file(self.test_file_path)
         compressed_file = self.test_file_path + ".flc"
 
-        # Tamper with compressed file
-        with open(compressed_file, "rb+") as f:
-            f.seek(33)  # Skip compression level and hash
-            f.write(b"tampered")
+        # Read the original compressed file
+        with open(compressed_file, "rb") as f:
+            compressed_data = f.read()
 
-        # Attempt to decompress tampered file
-        compression.decompress_file(compressed_file)
+        # Tamper with the compressed data (modify a byte in the actual compressed portion)
+        tampered_data = bytearray(compressed_data)
+        tampered_data[33] = (
+            tampered_data[33] + 1
+        ) % 256  # Modify a single byte after the header
 
-        # Original file should not be overwritten
+        # Write back the tampered data
+        with open(compressed_file, "wb") as f:
+            f.write(tampered_data)
+
+        # Attempt to decompress tampered file - should raise an error
+        with self.assertRaises(ValueError):
+            compression.decompress_file(compressed_file)
+
+        # Original file should remain unchanged
         with open(self.test_file_path, "rb") as f:
             file_content = f.read()
         self.assertEqual(file_content, self.test_data)
