@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  module_tests:
+  compression_test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -26,15 +26,37 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest pycryptodome
+          pip install -e .
 
       - name: Run compression tests
         run: pytest tests/test_compression.py -v
+
+  filelock_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pycryptodome
+          pip install -e .
 
       - name: Run filelock tests
         run: pytest tests/test_filelock.py -v
 
   integration_test:
-    needs: module_tests
+    needs: [compression_test, filelock_test]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,6 +75,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest pycryptodome
+          pip install -e .
 
       - name: Run integration tests
         run: pytest tests/test_integration.py -v
