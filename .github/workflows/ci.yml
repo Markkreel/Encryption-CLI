@@ -76,7 +76,8 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   integration-test:
-    needs: [test, compression-test]
+    # Update the job names to match the actual job names
+    needs: [test-filelock, test-compression]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
