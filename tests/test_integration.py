@@ -4,6 +4,7 @@ These tests verify the combined functionality of compression and encryption.
 """
 
 import os
+import zlib
 import pytest
 from src.main import secure_file, restore_file
 
@@ -24,8 +25,11 @@ def test_secure_and_restore_file(test_file):
     original_content = open(test_file, "rb").read()
 
     # Secure the file (encrypt + compress)
-    secure_file(test_file, password)
-    secured_file = test_file + ".flc"
+    try:
+        secure_file(test_file, password)
+        secured_file = test_file + ".flc"
+    except zlib.error as e:
+        raise ValueError(f"Failed to compress data: {e}") from e
 
     # Verify the secured file exists and original is unchanged
     assert os.path.exists(secured_file)
@@ -36,7 +40,10 @@ def test_secure_and_restore_file(test_file):
     assert not os.path.exists(test_file)
 
     # Restore the file (decompress + decrypt)
-    restore_file(secured_file, password)
+    try:
+        restore_file(secured_file, password)
+    except zlib.error as e:
+        raise ValueError(f"Failed to decompress data: {e}") from e
 
     # Verify the restored content matches the original
     assert os.path.exists(test_file)
@@ -62,9 +69,15 @@ def test_restore_file_with_wrong_extension(test_file):
 def test_restore_file_with_wrong_password(test_file):
     """Test restoring a file with incorrect password."""
     # First secure the file
-    secure_file(test_file, "correct_password")
-    secured_file = test_file + ".flc"
+    try:
+        secure_file(test_file, "correct_password")
+        secured_file = test_file + ".flc"
+    except zlib.error as e:
+        raise ValueError(f"Failed to compress data: {e}") from e
 
     # Then try to restore with wrong password
-    with pytest.raises(ValueError):
-        restore_file(secured_file, "wrong_password")
+    try:
+        with pytest.raises(ValueError):
+            restore_file(secured_file, "wrong_password")
+    except zlib.error as e:
+        raise ValueError(f"Failed to decompress data: {e}") from e
