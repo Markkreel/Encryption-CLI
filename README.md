@@ -1,91 +1,82 @@
 # FileLock
 
-FileLock is a command-line tool for securely encrypting and decrypting files using AES-256 encryption and SHA-256 integrity verification. Built with Python, it’s a lightweight, open-source utility designed to protect sensitive data with a password.
+![1741196416000](image/README/1741196416000.png)
 
-![1740416788661](image/README/1740416788661.png)
+A Python utility for securely encrypting files with AES-256 encryption and zlib compression, with integrity verification and progress tracking.
 
-## Purpose
+## Specifications
 
-In a world where data security is critical, FileLock provides a lightweight, open-source solution to encrypt files with a password of your choice. Whether it’s a personal document or a configuration file, FileLock ensures your data stays confidential using industry-standard cryptography.
-
-## Features
-
-- Encryption: Encrypt files with AES-256 in CBC mode, using a password-derived key via PBKDF2.
-- Decryption: Restore encrypted files to their original state with the correct password.
-- Integrity Verification: Uses SHA-256 hashing to detect tampering or corruption.
-- CLI Interface: Easy-to-use command-line interface with clear arguments and error handling.
-- Cross-Platform: Works on Windows, Linux, and macOS with minimal setup.
+- AES-256 CBC mode encryption
+- Zlib compression with configurable levels (1-9)
+- SHA-256 hash verification for tamper detection
 
 ## Installation
 
-**FileLock** requires Python 3.9+ and one external library. Here’s how to set it up:
-
-Clone the repository:
-
 ```bash
-git clone https://github.com/yourusername/filelock.git
-cd filelock
+# Requires Python 3.9+
+pip install -r requirements.txt
 ```
-
-Install dependencies:
-
-```bash
-pip install pycryptodome
-```
-
-Run the tool:
-
-- On **Unix-like systems (Linux/macOS)**: `./filelock.py`
-- On **Windows** or others: `python filelock.py`
 
 ## Usage
 
-FileLock currently supports encrypting files. Here’s how to use it:
+### Secure a File (Encrypt + Compress)
 
-### Encrypt a File
+```python
+from src.main import secure_file
 
-Encrypt a file with a password:
-
-```bash
-python filelock.py encrypt <file> --password "<your_password>"
+secure_file(
+    "sensitive.docx",
+    "your_strong_password",
+    compression_level=7  # Optimal balance of speed/size
+)
+# Creates: sensitive.docx.flc
 ```
 
-The encrypted file **(**`<file>.flk`) contains the salt, initialization vector (IV), and encrypted data.
+### Restore a File (Decrypt + Decompress)
 
-### Decrypt a File
+```python
+from src.main import restore_file
 
-Decrypt an encrypted file with the original password:
-
-```bash
-python filelock.py decrypt <file> --password "<your_password>"
+restore_file(
+    "sensitive.docx.flc",
+    "your_strong_password"
+)
+# Restores: sensitive.docx
 ```
 
-### Error Handling
+## Technical Details
 
-- File not found
-- Wrong password
-- Tampered file
+### File Structure (.flc)
 
-## Help
-
-```bash
-python filelock.py --help
+```
+[1 byte: compression level] +
+[32 bytes: SHA-256 hash] +
+[zlib compressed data] +
+[AES-256 encrypted payload]
 ```
 
-## Design Decisions
+### Integrity Verification
 
-- AES-256 CBC: Industry-standard encryption with CBC mode for block-level security, paired with a random IV to ensure uniqueness.
-- PBKDF2 Key Derivation: Turns your password into a secure 32-byte key with 100,000 iterations and a 16-byte salt, resisting brute-force attacks.
-- SHA-256 Integrity: Hashes the original file during encryption and verifies it on decryption, catching tampering or corruption.
-- File Format: Encrypted output (`<file>.flk`) bundles salt (16 bytes), IV (16 bytes), hash (32 bytes), and encrypted data into one portable file.
-- PEP 8 Compliance: Code follows Python’s style guide for readability and professionalism.
+1. Generates SHA-256 hash of original data
+2. Stores hash in file header
+3. Verifies hash during restoration
 
-## Contrubuting
+## Testing
 
-This is a personal project for my portfolio, but feel free to fork it and experiment! Suggestions are welcome—open an issue if you spot something to improve.
+Run test suite:
 
-## Acknowledgements
+```bash
+pytest tests/ -v
+```
 
-Built as a showcase for skills in cybersecurity, system design, and Python development.
+## Contributing
 
-**Last Updated:** 05-03-2025 ⸺ **Last Reviewed:** 05-03-2025
+1. Fork the repository
+2. Create feature branch
+3. Submit pull request
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details
+
+**Last Updated:** 06-03-2025 ⸺ **Last Checked:** 06-03-2025
