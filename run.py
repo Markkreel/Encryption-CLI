@@ -1,14 +1,18 @@
+"""
+Run script for main.py
+"""
+
 from src.main import secure_file, restore_file
 
 # Example usage
-file_path = "example.txt"
+FILE_PATH = r"C:/External/Portfolio/FileLock/localtest/test.txt.flk.flc"
 
 # Create a test file
-with open(file_path, "w") as f:
+with open(FILE_PATH, "w", encoding="UTF-8") as f:
     f.write("This is a test file to encrypt and compress!")
 
 # Secure the file
-secure_file(file_path, "your_password")
+secure_file(FILE_PATH, "your_password")
 
 # Restore the file
-restore_file(file_path + ".flc", "your_password")
+restore_file(FILE_PATH + ".flc", "your_password")
