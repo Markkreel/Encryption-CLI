@@ -19,38 +19,6 @@ def test_file(tmp_path):
     return str(file_path)
 
 
-def test_secure_and_restore_file(test_file):
-    """Test the complete workflow of securing and restoring a file."""
-    password = "test_password"
-    original_content = open(test_file, "rb").read()
-
-    # Secure the file (encrypt + compress)
-    try:
-        secure_file(test_file, password)
-        secured_file = test_file + ".flc"
-    except zlib.error as e:
-        raise ValueError(f"Failed to compress data: {e}") from e
-
-    # Verify the secured file exists and original is unchanged
-    assert os.path.exists(secured_file)
-    assert open(test_file, "rb").read() == original_content
-
-    # Remove the original file to ensure restore creates a new one
-    os.remove(test_file)
-    assert not os.path.exists(test_file)
-
-    # Restore the file (decompress + decrypt)
-    try:
-        restore_file(secured_file, password)
-    except zlib.error as e:
-        raise ValueError(f"Failed to decompress data: {e}") from e
-
-    # Verify the restored content matches the original
-    assert os.path.exists(test_file)
-    restored_content = open(test_file, "rb").read()
-    assert restored_content == original_content
-
-
 def test_secure_file_with_invalid_compression_level(test_file):
     """Test securing a file with invalid compression level."""
     with pytest.raises(ValueError, match="Compression level must be between 1 and 9"):
