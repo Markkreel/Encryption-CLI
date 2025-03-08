@@ -4,6 +4,12 @@
 
 A Python utility for securely encrypting files with AES-256 encryption and zlib compression, with integrity verification and progress tracking.
 
+## DEVELOPMENT NOTE!
+
+The program is currently stable but doesn't have a complete CLI integration for encryption/decryption and compression features. To test the program, you can skip the usage section and directly use `run.py`. Modify the `FILE_PATH` variable in `run.py` to encrypt/decrypt your desired file. You can also adjust the compression level in `main.py` by modifying `compression_level` variable.
+
+You still have the option to run the encryption/decryption features separately from the compression feature by running `filelock.py` in your CLI.
+
 ## Specifications
 
 - AES-256 CBC mode encryption
