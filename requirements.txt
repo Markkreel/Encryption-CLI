@@ -1,2 +1,2 @@
-pycryptodome==3.19.1
+pycryptodome==3.21.0
 pytest==7.4.3
