@@ -2,4 +2,4 @@ __pycache__/
 .pytest_cache/
 *.pyc
 localtest/
-run.py
+run_local.py
