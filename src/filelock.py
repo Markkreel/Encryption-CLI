@@ -1,3 +1,9 @@
+"""FileLock: A secure file encryption and decryption tool using AES-256.
+
+This module provides functionality to encrypt and decrypt files using AES-256 encryption
+in CBC mode with password-based key derivation using PBKDF2.
+"""
+
 import os
 import sys
 import hashlib
