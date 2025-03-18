@@ -1,3 +1,8 @@
+"""
+Setup script for FileLock package.
+Handles package configuration, dependencies and metadata for distribution.
+"""
+
 from setuptools import setup
 
 setup(
