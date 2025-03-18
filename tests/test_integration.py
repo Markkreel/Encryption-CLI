@@ -3,8 +3,6 @@
 These tests verify the combined functionality of compression and encryption.
 """
 
-import os
-import zlib
 import pytest
 from src.main import secure_file, restore_file
 
