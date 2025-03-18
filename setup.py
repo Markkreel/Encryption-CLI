@@ -15,5 +15,5 @@ setup(
     ],
     author="Portfolio Project",
     description="A secure file locking and encryption tool",
-    python_requires=">=3.8",
+    python_requires=">=3.9",
 )
