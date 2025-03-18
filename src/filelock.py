@@ -148,7 +148,13 @@ def decrypt_file(file_path: str, password: str) -> None:
         print(f"Error during decryption: {e}", file=sys.stderr)
 
 
-def main():
+def main() -> None:
+    """Parse command line arguments and execute encryption/decryption operations.
+
+    This function sets up the argument parser with two subcommands:
+    - encrypt: Encrypts a file using AES-256 with a provided password
+    - decrypt: Decrypts a previously encrypted file using the correct password
+    """
     parser = ArgumentParser(
         description="FileLock: A secure file encryption and decryption tool using AES-256"
     )
