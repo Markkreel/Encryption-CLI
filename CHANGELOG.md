@@ -13,8 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic file locking functionality
 - File compression support
 - Unit tests and integration tests
+- Robust CLI interface with encrypt/decrypt commands
+- Configuration management system with customizable settings
+- Comprehensive logging system
+- Project documentation (README, CONTRIBUTING, SECURITY)
+- GitHub Actions CI workflow
 
 ### Changed
+
+- Enhanced file handling with validation and error handling
+- Improved compression with configurable levels
+- Structured project layout with modular components
 
 ### Deprecated
 
@@ -23,3 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+- Implemented secure password handling
+- Added file extension validation
+- Secure temporary file management
