@@ -68,6 +68,8 @@ Optional arguments:
 
 - `--output`: Specify custom output path
 
+For more example commands and usage scenarios, refer to the `sample.sh` script included in the repository.
+
 ## Technical Details
 
 ### File Structure (.flc)
