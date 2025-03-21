@@ -2,11 +2,13 @@
 
 A Python utility for securely encrypting files with AES-256 encryption and zlib compression, with integrity verification and progress tracking.
 
-## DEVELOPMENT NOTE!
+## Features
 
-The program is currently stable but doesn't have a complete CLI integration for encryption/decryption and compression features. To test the program, you can skip the usage section and directly use `run.py`. Modify the `FILE_PATH` variable in `run.py` to encrypt/decrypt your desired file. You can also adjust the compression level in `main.py` by modifying `compression_level` variable.
-
-You still have the option to run the encryption/decryption features separately from the compression feature by running `filelock.py` in your CLI.
+- Complete CLI integration for encryption, decryption, and compression
+- Configurable compression levels through CLI arguments
+- Extensive logging and error handling
+- Support for multiple file formats
+- Progress tracking during operations
 
 ## Specifications
 
@@ -39,8 +41,10 @@ secure_file(
 #### CLI Command:
 
 ```bash
-python src/filelock.py encrypt file_path --password yourpassword
+python src/cli.py encrypt file_path --password yourpassword --compression balanced
 ```
+
+Available compression levels: none, fast, balanced, max
 
 ### Restore a File (Decrypt + Decompress)
 
@@ -57,8 +61,12 @@ restore_file(
 #### CLI Command:
 
 ```bash
-python src/filelock.py decrypt file_path --password mypassword
+python src/cli.py decrypt file_path --password mypassword
 ```
+
+Optional arguments:
+
+- `--output`: Specify custom output path
 
 ## Technical Details
 
