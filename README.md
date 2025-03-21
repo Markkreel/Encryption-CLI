@@ -1,4 +1,4 @@
-# FileLock
+# Encryption CLI
 
 A Python utility for securely encrypting files with AES-256 encryption and zlib compression, with integrity verification and progress tracking.
 
