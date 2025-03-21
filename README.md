@@ -68,7 +68,12 @@ Optional arguments:
 
 - `--output`: Specify custom output path
 
-For more example commands and usage scenarios, refer to the `sample.sh` script included in the repository.
+For more example commands and usage scenarios, refer to the `sample.sh` script included in the repository. The script includes examples of:
+
+- Direct file compression with different compression levels
+- Progress tracking during compression/decompression
+- Various compression configurations
+- Basic and advanced usage patterns
 
 ## Technical Details
 
