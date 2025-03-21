@@ -36,6 +36,12 @@ secure_file(
 # Creates: sensitive.docx.flc
 ```
 
+#### CLI Command:
+
+```bash
+python src/filelock.py encrypt file_path --password yourpassword
+```
+
 ### Restore a File (Decrypt + Decompress)
 
 ```python
@@ -46,6 +52,12 @@ restore_file(
     "your_strong_password"
 )
 # Restores: sensitive.docx
+```
+
+#### CLI Command:
+
+```bash
+python src/filelock.py decrypt file_path --password mypassword
 ```
 
 ## Technical Details
