@@ -160,9 +160,7 @@ def main() -> None:
         epilog="Examples:\n"
         "  Encrypt: python filelock.py encrypt myfile.txt --password mypassword\n"
         "  Decrypt: python filelock.py decrypt myfile.txt.flk --password mypassword",
-        formatter_class=lambda prog: ArgumentParser(
-            prog, formatter_class=RawDescriptionHelpFormatter
-        ),
+        formatter_class=RawDescriptionHelpFormatter,
     )
     subparsers = parser.add_subparsers(
         dest="command",
