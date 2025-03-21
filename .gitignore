@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 localtest/
 run_local.py
+image/
