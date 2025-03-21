@@ -1,7 +1,5 @@
 # FileLock
 
-![1741196416000](image/README/1741196416000.png)
-
 A Python utility for securely encrypting files with AES-256 encryption and zlib compression, with integrity verification and progress tracking.
 
 ## DEVELOPMENT NOTE!
