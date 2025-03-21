@@ -156,26 +156,54 @@ def main() -> None:
     - decrypt: Decrypts a previously encrypted file using the correct password
     """
     parser = ArgumentParser(
-        description="FileLock: A secure file encryption and decryption tool using AES-256"
+        description="FileLock: A secure file encryption and decryption tool using AES-256",
+        epilog="Examples:\n"
+        "  Encrypt: python filelock.py encrypt myfile.txt --password mypassword\n"
+        "  Decrypt: python filelock.py decrypt myfile.txt.flk --password mypassword",
+        formatter_class=lambda prog: ArgumentParser(
+            prog, formatter_class=RawDescriptionHelpFormatter
+        ),
     )
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command",
+        title="commands",
+        description="valid commands",
+        help="Available commands",
+        required=True,
+    )
 
     # Encrypt command
     encrypt_parser = subparsers.add_parser(
-        "encrypt", help="Encrypt a file using AES-256"
+        "encrypt",
+        help="Encrypt a file using AES-256",
+        description="Encrypt a file using AES-256 encryption in CBC mode."
+        " The encrypted file will be saved with a .flk extension.",
     )
-    encrypt_parser.add_argument("file", help="Path to the file to encrypt")
     encrypt_parser.add_argument(
-        "--password", required=True, help="Password for encryption"
+        "file",
+        help="Path to the file to encrypt. The encrypted file will be saved as <file>.flk",
+    )
+    encrypt_parser.add_argument(
+        "--password",
+        required=True,
+        help="Password for encryption. Choose a strong password with mixed characters.",
     )
 
     # Decrypt command
     decrypt_parser = subparsers.add_parser(
-        "decrypt", help="Decrypt a file using AES-256"
+        "decrypt",
+        help="Decrypt a file using AES-256",
+        description="Decrypt a previously encrypted .flk file using the correct password."
+        " The original file will be restored.",
     )
-    decrypt_parser.add_argument("file", help="Path to the file to decrypt")
     decrypt_parser.add_argument(
-        "--password", required=True, help="Password for decryption"
+        "file",
+        help="Path to the encrypted .flk file to decrypt. The file must have a .flk extension.",
+    )
+    decrypt_parser.add_argument(
+        "--password",
+        required=True,
+        help="Password used for encryption. Must match the original encryption password.",
     )
 
     args = parser.parse_args()
