@@ -7,7 +7,7 @@ in CBC mode with password-based key derivation using PBKDF2.
 import os
 import sys
 import hashlib
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
