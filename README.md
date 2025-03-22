@@ -94,10 +94,30 @@ For more example commands and usage scenarios, refer to the `sample.sh` script i
 
 ## Testing
 
+### Running Tests Locally
+
 Run test suite:
 
 ```bash
 pytest tests/ -v
+```
+
+### Running Tests with Docker
+
+You can also run tests using Docker:
+
+```bash
+# Build the Docker image
+docker build -t filelock-tests .
+
+# Run tests in a Docker container
+docker run --rm filelock-tests
+```
+
+Or using Docker Compose:
+
+```bash
+docker-compose up
 ```
 
 ## Contributing
