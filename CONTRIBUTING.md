@@ -10,16 +10,22 @@ Thank you for your interest in contributing to FileLock! We welcome contribution
    git clone https://github.com/YOUR-USERNAME/FileLock.git
    cd FileLock
    ```
+
 2. **Set up Python Environment**
 
    - Python 3.9 or higher is required
    - Create and activate a virtual environment:
+
      ```bash
+
      python -m venv venv
      source venv/bin/activate  # On Windows: .\venv\Scripts\activate
      ```
+
    - Install dependencies:
+
      ```bash
+
      pip install -r requirements.txt
      ```
 
@@ -30,20 +36,25 @@ Thank you for your interest in contributing to FileLock! We welcome contribution
    ```bash
    git checkout -b feature/your-feature-name
    ```
+
 2. **Make Changes**
 
    - Write your code
    - Add tests for new functionality
    - Ensure all tests pass:
+
      ```bash
+
      python -m pytest tests/
      ```
+
 3. **Code Style**
 
    - Follow PEP 8 guidelines
    - Use meaningful variable and function names
    - Add docstrings for functions and classes
    - Keep functions focused and concise
+
 4. **Commit Changes**
 
    - Write clear, concise commit messages
