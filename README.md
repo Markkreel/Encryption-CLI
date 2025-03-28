@@ -38,7 +38,7 @@ secure_file(
 # Creates: sensitive.docx.flc
 ```
 
-#### CLI Command:
+#### Encrypt Command
 
 ```bash
 python src/cli.py encrypt file_path --password yourpassword --compression balanced
@@ -58,7 +58,7 @@ restore_file(
 # Restores: sensitive.docx
 ```
 
-#### CLI Command:
+#### Decrypt Command
 
 ```bash
 python src/cli.py decrypt file_path --password mypassword
@@ -79,7 +79,7 @@ For more example commands and usage scenarios, refer to the `sample.sh` script i
 
 ### File Structure (.flc)
 
-```
+```bash
 [1 byte: compression level] +
 [32 bytes: SHA-256 hash] +
 [zlib compressed data] +
