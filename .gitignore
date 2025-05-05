@@ -5,3 +5,4 @@ localtest/
 run_local.py
 image/
 .vscode/
+.idx/
