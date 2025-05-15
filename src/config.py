@@ -1,7 +1,6 @@
 """Configuration settings for FileLock."""
 
 from pathlib import Path
-from typing import Dict, List
 
 # Compression settings
 COMPRESSION_LEVELS = {"none": 0, "fast": 3, "balanced": 6, "max": 9}
