@@ -26,7 +26,7 @@ def validate_file_path(file_path: Union[str, Path]) -> Path:
             raise ValueError(f"Path is not a file: {path}")
         return path
     except Exception as e:
-        raise ValueError(f"Invalid file path: {e}")
+        raise ValueError(f"Invalid file path: {e}") from e
 
 
 def ensure_output_path(
