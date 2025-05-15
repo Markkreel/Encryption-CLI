@@ -1,7 +1,6 @@
 """Command-line interface for FileLock."""
 
 import argparse
-from pathlib import Path
 from typing import Optional
 
 from .config import COMPRESSION_LEVELS, DEFAULT_COMPRESSION_LEVEL
