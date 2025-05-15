@@ -148,7 +148,7 @@ def decrypt_file(file_path: str, password: str) -> None:
             if os.path.exists(decrypted_file_path):
                 os.remove(decrypted_file_path)
             print(
-                "Error: Integrity check failed - file may have been tampered with or password might be wrong",
+                "Error: Integrity check failed - file tampered or wrong password",
                 file=sys.stderr,
             )
             return
