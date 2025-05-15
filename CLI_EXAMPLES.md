@@ -67,7 +67,7 @@ from src.compression import compress_file
 compress_file("myfile.txt")
 ```
 
-### Maximum Compression
+### High Compression Settings
 
 Compress with highest compression level:
 
