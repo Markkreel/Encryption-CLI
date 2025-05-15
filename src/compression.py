@@ -16,7 +16,7 @@ def compress_file(
     Args:
         file_path (str): Path to the file to compress
         compression_level (int, optional): Compression level (1-9). Defaults to 6.
-        progress_callback (Optional[Callable[[int, int], None]], optional): Callback for progress tracking.
+        progress_callback (Optional[Callable[[int, int], None]], optional): Callback for
             Takes current bytes processed and total bytes as arguments.
     """
     if not 1 <= compression_level <= 9:
@@ -75,7 +75,8 @@ def decompress_file(
 
     Args:
         file_path (str): Path to the compressed file
-        progress_callback (Optional[Callable[[int, int], None]], optional): Callback for progress tracking.
+        progress_callback (Optional[Callable[[int, int], None]], optional): Callback for
+            progress tracking.
             Takes current bytes processed and total bytes as arguments.
     """
     if not file_path.endswith(".flc"):
@@ -103,7 +104,7 @@ def decompress_file(
         decompressed_data = decompressor.decompress(compressed_data)
         decompressed_data += decompressor.flush()
     except zlib.error as e:
-        raise ValueError(f"Failed to decompress data: {e}")
+        raise ValueError(f"Failed to decompress data: {e}") from e
 
     # Verify integrity
     computed_hash = hashlib.sha256(decompressed_data).digest()
