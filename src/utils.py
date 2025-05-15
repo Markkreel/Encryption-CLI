@@ -59,7 +59,7 @@ def ensure_output_path(
 
         return path
     except Exception as e:
-        raise ValueError(f"Invalid output path: {e}")
+        raise ValueError(f"Invalid output path: {e}") from e
 
 
 def get_file_size(file_path: Union[str, Path]) -> int:
