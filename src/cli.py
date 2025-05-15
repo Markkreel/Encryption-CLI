@@ -75,7 +75,7 @@ def validate_args(args: argparse.Namespace) -> bool:
         file_path = validate_file_path(args.file_path)
 
         if not is_valid_extension(file_path, ALLOWED_EXTENSIONS):
-            logger.error(f"Unsupported file type: {file_path.suffix}")
+            logger.error("Unsupported file type: %s", file_path.suffix)
             return False
 
         if args.command == "encrypt":
