@@ -1,22 +1,39 @@
-"""Integration module for FileLock compression and encryption functionality.
-
-This module provides a unified interface for compressing and encrypting files,
-as well as decrypting and decompressing them, while keeping the implementation
-details of individual modules hidden.
+"""Main script for FileLock application.
+Initializes the application and handles file operations.
 """
 
-import os
-from typing import Optional, Callable
-from src.compression import compress_file, decompress_file
-from src.filelock import encrypt_file, decrypt_file
+from .cli import parse_args
+from .filelock import FileLock
+from .logging import setup_logger
 
 
-def secure_file(
-    file_path: str,
-    password: str,
-    compression_level: int = 6,
-    progress_callback: Optional[Callable[[int, int], None]] = None,
-) -> None:
+logger = setup_logger(__name__)
+
+
+def main():
+    """Main function to run the FileLock application."""
+    args = parse_args()
+    if not args:
+        return
+
+    file_lock = FileLock(
+        password=args.password,
+        compression_level=args.compression,
+        progress_callback=lambda current, total: print(
+            f"Progress: {current}/{total} bytes"
+        ),
+    )
+
+    if args.command == "encrypt":
+        file_lock.encrypt(args.file_path, args.output)
+        logger.info("File %s encrypted successfully.", args.file_path)
+    elif args.command == "decrypt":
+        file_lock.decrypt(args.file_path, args.output)
+        logger.info("File %s decrypted successfully.", args.file_path)
+
+
+if __name__ == "__main__":
+    main()
     """Encrypt and compress a file.
 
     This function first encrypts the file using AES-256 encryption and then
@@ -51,12 +68,6 @@ def secure_file(
             os.remove(encrypted_file)
         raise ValueError(f"Failed to secure file: {str(e)}") from e
 
-
-def restore_file(
-    file_path: str,
-    password: str,
-    progress_callback: Optional[Callable[[int, int], None]] = None,
-) -> None:
     """Decompress and decrypt a file.
 
     This function first decompresses the file using zlib decompression and then
